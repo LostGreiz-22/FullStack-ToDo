@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface TodoRepository extends JpaRepository<TodoListEntity, BigInteger> {
     List<TodoListEntity> findAll();
     TodoListEntity findByTodoId(UUID id);
-    
+
     @Transactional
     void deleteByTodoId (UUID id);
 

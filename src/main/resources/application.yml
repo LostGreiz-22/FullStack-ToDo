@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://database-1.cahnie5asjfb.ap-southeast-1.rds.amazonaws.com:5432/wd12p
     username: postgres
     password: myfirstproject
   servlet:

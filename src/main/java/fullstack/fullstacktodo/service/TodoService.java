@@ -20,18 +20,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TodoService {
 
-    private final DateTimeUtil dataTimeUtil;
+    private final DateTimeUtil dateTimeUtil;
     private final TodoRepository todoRepository;
     private final ModelMapper modelMapper;
 
     public List<TodoDTO> addTodo(@NonNull String newTodo) {
 
-        //Initialize new todo
-        DateTimeUtil dateTimeUtil;
+        // Initialize new todo
         TodoListEntity todo = TodoListEntity.builder()
                 .todoId(UUID.randomUUID())
                 .todo(newTodo)
-                .createdData(dateTimeUtil.currentDate())
+                .createdDate(dateTimeUtil.currentDate())
                 .modifiedDate(dateTimeUtil.currentDate())
                 .build();
 
@@ -39,37 +38,49 @@ public class TodoService {
         todoRepository.save(todo);
 
         return getAllTodos();
-        public List<TodoDTO> updateTodo(@NonNull Todo updatedTodo) {
+    }
 
-            // Get Todo Entity
-            TodoListEntity oldTodo = todoRepository.findByTodoId(updatedTodo.getTodoId());
+    public List<TodoDTO> updateTodo(@NonNull Todo updatedTodo) {
 
-            // Check if todoId exist
-            if (oldTodo == null) throw new RuntimeException("Todo doesn't exist.");
+        // Get To do Entity
+        TodoListEntity oldTodo = todoRepository.findByTodoId(updatedTodo.getTodoId());
 
-            // Update Todo
-            TodoListEntity newTodo = TodoListEntity.builder()
-                    .todoId(oldTodo.getTodoId())
-                    .todo(updatedTodo.getTodo())
-                    .createdDate(oldTodo.getCreatedDate())
-                    .modifiedDate(dateTimeUtil.currentDate())
-                    .build();
+        // Check if todoId exist
+        if (oldTodo == null) throw new RuntimeException("Todo doesn't exist.");
 
-            // save to database
-            todoRepository.save(newTodo);
+        // Update To do
+        TodoListEntity newTodo = TodoListEntity.builder()
+                .todoId(oldTodo.getTodoId())
+                .todo(updatedTodo.getTodo())
+                .createdDate(oldTodo.getCreatedDate())
+                .modifiedDate(dateTimeUtil.currentDate())
+                .build();
 
-            return getAllTodos();
+        // save to database
+        todoRepository.save(newTodo);
 
-        }
-
+        return getAllTodos();
 
     }
 
-    private  List<TodoDTO> getAllTodos() {
+    public List<TodoDTO> deleteTodo(UUID id) {
+        // Get To do Entity
+        TodoListEntity todo = todoRepository.findByTodoId(id);
+
+        // Check if to do exist
+        if(todo == null) throw new RuntimeException("Todo doesn't exist");
+
+        // Delete to do
+        todoRepository.deleteByTodoId(id);
+
+        return getAllTodos();
+    }
+
+    private List<TodoDTO> getAllTodos() {
         List<TodoListEntity> allTodos = todoRepository.findAll();
         List<TodoDTO> updatedList = new ArrayList<>();
 
-        allTodos.forEach(data ->{
+        allTodos.forEach(data -> {
             updatedList.add(modelMapper.map(data, TodoDTO.class));
         });
 

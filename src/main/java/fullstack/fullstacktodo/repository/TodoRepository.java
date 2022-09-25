@@ -13,6 +13,5 @@ public interface TodoRepository extends JpaRepository<TodoListEntity, BigInteger
     TodoListEntity findByTodoId(UUID id);
 
     @Transactional
-    void deleteByTodoId (UUID id);
-
+    void deleteByTodoId(UUID id);
 }

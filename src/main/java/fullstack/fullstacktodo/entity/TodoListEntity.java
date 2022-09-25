@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-
 @Getter
 @ToString
 @RequiredArgsConstructor
